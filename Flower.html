@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Keiziah</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at center, #2b0a1a 0%, #12040c 70%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Georgia', serif;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Instruction text */
+.tap {
+    position: absolute;
+    top: 20px;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.flower {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.petal {
+    position: absolute;
+    width: 120px;
+    height: 160px;
+    background: radial-gradient(circle at 50% 30%, #ff758f, #b3123f 70%);
+    border-radius: 60% 60% 50% 50%;
+    transform-origin: bottom center;
+    opacity: 0;
+    transform: scale(0);
+    animation: bloom 2s ease forwards;
+    box-shadow: 0 0 15px rgba(255, 100, 120, 0.3);
+}
+
+.petal:nth-child(1) { transform: rotate(0deg) scale(0); animation-delay: 0.2s; }
+.petal:nth-child(2) { transform: rotate(45deg) scale(0); animation-delay: 0.4s; }
+.petal:nth-child(3) { transform: rotate(90deg) scale(0); animation-delay: 0.6s; }
+.petal:nth-child(4) { transform: rotate(135deg) scale(0); animation-delay: 0.8s; }
+.petal:nth-child(5) { transform: rotate(180deg) scale(0); animation-delay: 1s; }
+.petal:nth-child(6) { transform: rotate(225deg) scale(0); animation-delay: 1.2s; }
+.petal:nth-child(7) { transform: rotate(270deg) scale(0); animation-delay: 1.4s; }
+.petal:nth-child(8) { transform: rotate(315deg) scale(0); animation-delay: 1.6s; }
+
+@keyframes bloom {
+    to {
+        transform: rotate(var(--r)) scale(1);
+        opacity: 1;
+    }
+}
+@keyframes letterGlow {
+    0% {
+        box-shadow:
+            -10px 0 30px rgba(0,0,0,0.5),
+            0 0 20px rgba(255, 120, 150, 0.3);
+    }
+    100% {
+        box-shadow:
+            -10px 0 30px rgba(0,0,0,0.5),
+            0 0 50px rgba(255, 120, 150, 0.6);
+    }
+}
+
+.letter.show {
+    animation: letterGlow 2s ease-in-out infinite alternate;
+}
+
+.center {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, gold, orange);
+    border-radius: 50%;
+
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -43%);
+
+    box-shadow: 0 0 25px rgba(255, 200, 0, 0.6);
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+    animation-delay: 2s;
+}
+/* Name */
+.name {
+    position: absolute;
+    bottom: 80px;
+    font-size: 32px;
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards;
+    animation-delay: 2.5s;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* Glow */
+body::after {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,77,109,0.2) 0%, transparent 70%);
+    animation: glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { transform: scale(1); }
+    to { transform: scale(1.2); }
+}
+
+.falling-petal {
+    position: fixed;
+    top: -50px;
+    width: 15px;
+    height: 20px;
+    background: linear-gradient(to bottom, #ff4d6d, #800f2f);
+    border-radius: 50% 50% 50% 50%;
+    opacity: 0.8;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0.3;
+    }
+}
+
+.letter {
+    position: fixed;
+    right: -400px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 320px;
+    padding: 25px;
+    background: rgba(20, 5, 15, 0.85);
+    backdrop-filter: blur(12px);
+    border-left: 2px solid rgba(255, 100, 120, 0.4);
+    border-radius: 15px 0 0 15px;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: all 1.5s ease;
+}
+
+/* When letter appears */
+.letter.show {
+    right: 0;
+    opacity: 1;
+    box-shadow:
+        -10px 0 30px rgba(0,0,0,0.5),
+        0 0 40px rgba(255, 120, 150, 0.4);
+}
+
+.letter h2 {
+    margin-top: 0;
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+.letter p {
+    font-size: 14px;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+</style>
+</head>
+
+<body>
+
+<div class="tap">tap anywhere</div>
+
+<audio id="music" loop>
+    <source src="piano.mp3" type="audio/mpeg">
+</audio>
+
+<div class="flower">
+    <div class="petal" style="--r:0deg;"></div>
+    <div class="petal" style="--r:45deg;"></div>
+    <div class="petal" style="--r:90deg;"></div>
+    <div class="petal" style="--r:135deg;"></div>
+    <div class="petal" style="--r:180deg;"></div>
+    <div class="petal" style="--r:225deg;"></div>
+    <div class="petal" style="--r:270deg;"></div>
+    <div class="petal" style="--r:315deg;"></div>
+    <div class="center"></div>
+</div>
+<div class="letter" id="letter">
+    <h2>Hi Keiziah!</h2>
+    <p>
+        Just thought it would be nice if I could give  
+        flowers to someone this Valentine’s… and I thought of you.
+    </p>
+    <p>
+         Though this isn’t a physical one,  
+    at least it won’t decay ✨  
+    You can come back to this as many times  
+    as you like and it’ll still look the same.  
+    Hope you like it.
+    </p>
+    <p>
+        Happy Valentine’s Day!  🤌✨
+    </p>
+</div>
+</div>
+<div class="name">Flowers for  you!</div>
+
+<script>
+const music = document.getElementById("music");
+
+function startExperience() {
+    music.volume = 0.4;
+    music.play();
+    document.querySelector(".tap").style.display = "none";
+
+    // Show letter after bloom animation finishes
+    setTimeout(() => {
+        document.getElementById("letter").classList.add("show");
+    }, 3500);
+}
+
+// Start on first click only
+document.body.addEventListener("click", startExperience, { once: true });
+
+
+// 🌸 Falling petals generator
+function createPetal() {
+    const petal = document.createElement("div");
+    petal.classList.add("falling-petal");
+
+    petal.style.left = Math.random() * window.innerWidth + "px";
+    petal.style.animationDuration = (5 + Math.random() * 5) + "s";
+
+    document.body.appendChild(petal);
+
+    setTimeout(() => {
+        petal.remove();
+    }, 10000);
+}
+
+// Petals start after click
+document.body.addEventListener("click", () => {
+    setInterval(createPetal, 400);
+}, { once: true });
+
+</script>
+
+</body>
+</html>
